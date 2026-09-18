@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareerX Dashboard</title>
+</head>
+<body>
+
+<h1>Career X-Ray Dashboard</h1>
+
+<h2>Job Readiness Score: {{ score }}%</h2>
+
+<h3>Missing Skills:</h3>
+
+<ul>
+{% for skill in missing %}
+    <li>{{ skill }}</li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
