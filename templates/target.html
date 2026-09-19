@@ -1,74 +1,827 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareerX - Select Target Job</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerX — Choose Your Dream Career Path</title>
 
-    <style>
-        body{
-            background:#071633;
-            color:white;
-            font-family:Arial,sans-serif;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+  <!-- Clean, readable fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-        .card{
-            background:#0d234f;
-            padding:40px;
-            border-radius:20px;
-            width:500px;
-            text-align:center;
-        }
+  <style>
+    /* --------------------------------------------------------------------------
+       MINIMAL DESIGN SYSTEM (NOTION / STRIPE LIGHT STYLE)
+       -------------------------------------------------------------------------- */
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --border-subtle: #E2E8F0;
+      --border-focus: #4F46E5;
+      
+      --text-main: #0F172A;
+      --text-body: #475569;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
 
-        h1{
-            color:#4fc3ff;
-            margin-bottom:20px;
-        }
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --primary-subtle: #EEF2FF;
+      --primary-border: #C7D2FE;
 
-        select{
-            width:100%;
-            padding:12px;
-            font-size:18px;
-            margin-top:20px;
-            border-radius:10px;
-        }
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-card: 0 2px 8px -1px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+      --shadow-hover: 0 8px 24px -4px rgba(79, 70, 229, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --shadow-float: 0 12px 32px -4px rgba(15, 23, 42, 0.12);
 
-        button{
-            margin-top:25px;
-            padding:12px 25px;
-            border:none;
-            border-radius:10px;
-            background:#31b7ff;
-            color:white;
-            font-size:18px;
-            cursor:pointer;
-        }
-    </style>
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-body);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      padding-bottom: 120px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* --------------------------------------------------------------------------
+       TOP NAVBAR
+       -------------------------------------------------------------------------- */
+    .navbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .nav-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .logo-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+
+    .nav-tag {
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--primary-border);
+    }
+
+    /* --------------------------------------------------------------------------
+       STEPPER (PROGRESS BAR)
+       -------------------------------------------------------------------------- */
+    .stepper-wrap {
+      margin: 2rem auto 2.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      position: relative;
+    }
+
+    .step-node {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-node.active {
+      color: var(--primary);
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.775rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-node.active .step-num {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    /* --------------------------------------------------------------------------
+       HERO SECTION
+       -------------------------------------------------------------------------- */
+    .hero {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2rem, 3.2vw, 2.6rem);
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* --------------------------------------------------------------------------
+       SEARCH & FILTERS
+       -------------------------------------------------------------------------- */
+    .search-filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      font-size: 0.925rem;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-pill:hover {
+      background: #F1F5F9;
+      color: var(--text-main);
+    }
+
+    .filter-pill.active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border-color: var(--primary-border);
+    }
+
+    /* --------------------------------------------------------------------------
+       CAREER CARDS GRID
+       -------------------------------------------------------------------------- */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .role-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .role-card:hover {
+      transform: translateY(-2px);
+      border-color: #CBD5E1;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Selected clean state */
+    .role-card.selected {
+      border-color: var(--primary);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 2px var(--primary), var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .role-icon {
+      font-size: 1.85rem;
+      line-height: 1;
+    }
+
+    .check-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.2s ease;
+    }
+
+    .role-card.selected .check-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .role-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+    }
+
+    .role-desc {
+      font-size: 0.85rem;
+      color: var(--text-body);
+      line-height: 1.45;
+      margin-bottom: 1.15rem;
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-pill {
+      font-size: 0.725rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: #F1F5F9;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .role-card.selected .skill-pill {
+      background: var(--primary-subtle);
+      color: var(--primary);
+    }
+
+    /* Empty search message */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* --------------------------------------------------------------------------
+       FLOATING ACTION DOCK
+       -------------------------------------------------------------------------- */
+    .dock {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      width: calc(100% - 2rem);
+      max-width: 680px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 10px 16px;
+      box-shadow: var(--shadow-float);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+    }
+
+    .dock.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dock-target-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dock-emoji {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .dock-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .dock-role-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .btn-continue {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.925rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-continue:hover {
+      background: var(--primary-hover);
+    }
+
+    /* --------------------------------------------------------------------------
+       RESPONSIVE ADJUSTMENTS
+       -------------------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .steps-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      .dock {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+      }
+      .btn-continue {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stepper-wrap {
+        display: none;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="card">
+  <!-- Minimal Top Header -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-badge">
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span>CareerX</span>
+      </a>
+      <span class="nav-tag">AI Intake Flow</span>
+    </div>
+  </nav>
 
-        <h1>Select Your Target Job</h1>
+  <main class="container">
 
-        <select>
-            <option>AI Engineer</option>
-            <option>ML Engineer</option>
-            <option>Data Scientist</option>
-            <option>Software Engineer</option>
-            <option>Cyber Security Engineer</option>
-            <option>Cloud Engineer</option>
-        </select>
-
-        <br>
-
-        <button>Continue</button>
-
+    <!-- Stepper / Progress Bar -->
+    <div class="stepper-wrap">
+      <div class="steps-row">
+        <div class="step-node active">
+          <div class="step-num">1</div>
+          <span>Target Job</span>
+        </div>
+        <div class="step-node">
+          <div class="step-num">2</div>
+          <span>Assessment</span>
+        </div>
+        <div class="step-node">
+          <div class="step-num">3</div>
+          <span>Skill Gap</span>
+        </div>
+        <div class="step-node">
+          <div class="step-num">4</div>
+          <span>Roadmap</span>
+        </div>
+      </div>
     </div>
 
+    <!-- Hero Title & Subtitle -->
+    <section class="hero">
+      <div class="hero-badge">Step 1 of 4</div>
+      <h1>Choose Your Dream Career Path</h1>
+      <p>Select the role you want to become. CareerX will analyze your skills, identify gaps, and generate a personalized roadmap.</p>
+    </section>
+
+    <!-- Search Input & Category Pills -->
+    <div class="search-filter-bar">
+      <div class="search-box">
+        <i data-lucide="search" class="search-icon" style="width: 18px; height: 18px;"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search role or skill (e.g., Python, Cloud, LLM, SQL)..."
+        />
+      </div>
+
+      <div class="filter-pills">
+        <button class="filter-pill active" data-category="all">All Roles</button>
+        <button class="filter-pill" data-category="ai">Artificial Intelligence</button>
+        <button class="filter-pill" data-category="data">Data & Analytics</button>
+        <button class="filter-pill" data-category="engineering">Engineering & Cloud</button>
+      </div>
+    </div>
+
+    <!-- Empty Search State -->
+    <div class="empty-state" id="emptyState">
+      No roles matched your search. Try clearing the filter or searching for another term.
+    </div>
+
+    <!-- 8 Career Selection Cards -->
+    <form id="roleForm" action="assessment.html" method="GET">
+      <!-- Hidden Input for Form Submission -->
+      <input type="hidden" name="target_role" id="selectedRoleInput" value="" />
+
+      <div class="cards-grid" id="cardsGrid">
+
+        <!-- 1. AI Engineer -->
+        <div class="role-card" data-role="AI Engineer" data-category="ai" data-keywords="generative ai llms agents langchain rag prompt engineering">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">🤖</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">AI Engineer</h3>
+            <p class="role-desc">Build autonomous agents, production LLM pipelines, and enterprise RAG apps.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Generative AI</span>
+            <span class="skill-pill">LLMs</span>
+            <span class="skill-pill">Agents</span>
+          </div>
+        </div>
+
+        <!-- 2. Machine Learning Engineer -->
+        <div class="role-card" data-role="Machine Learning Engineer" data-category="ai" data-keywords="deep learning pytorch mlops tensorflow distributed training inference">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">🧠</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Machine Learning Engineer</h3>
+            <p class="role-desc">Train deep learning models, optimize inference, and manage MLOps scale.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Deep Learning</span>
+            <span class="skill-pill">PyTorch</span>
+            <span class="skill-pill">MLOps</span>
+          </div>
+        </div>
+
+        <!-- 3. Data Scientist -->
+        <div class="role-card" data-role="Data Scientist" data-category="data" data-keywords="predictive models statistics python a/b testing pandas scikit forecasting">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">📊</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Data Scientist</h3>
+            <p class="role-desc">Extract deep predictive signals and design statistical experimentation engines.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Predictive Models</span>
+            <span class="skill-pill">Statistics</span>
+            <span class="skill-pill">Python</span>
+          </div>
+        </div>
+
+        <!-- 4. Data Analyst -->
+        <div class="role-card" data-role="Data Analyst" data-category="data" data-keywords="sql powerbi business insights tableau dbt metric tracking reporting">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">📈</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Data Analyst</h3>
+            <p class="role-desc">Transform product & business logs into clear executive decision dashboards.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">SQL</span>
+            <span class="skill-pill">PowerBI</span>
+            <span class="skill-pill">Business Insights</span>
+          </div>
+        </div>
+
+        <!-- 5. Software Engineer -->
+        <div class="role-card" data-role="Software Engineer" data-category="engineering" data-keywords="full-stack system design apis backend frontend go react node microservices">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">💻</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Software Engineer</h3>
+            <p class="role-desc">Design scalable web architectures, resilient services, and clean REST/gRPC APIs.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Full-Stack</span>
+            <span class="skill-pill">System Design</span>
+            <span class="skill-pill">APIs</span>
+          </div>
+        </div>
+
+        <!-- 6. AI Researcher -->
+        <div class="role-card" data-role="AI Researcher" data-category="ai" data-keywords="neural architectures papers math transformers diffusion research theory">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">🔬</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">AI Researcher</h3>
+            <p class="role-desc">Advance next-generation loss functions, theoretical limits, and novel architectures.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Neural Architectures</span>
+            <span class="skill-pill">Papers</span>
+            <span class="skill-pill">Math</span>
+          </div>
+        </div>
+
+        <!-- 7. Cloud Engineer -->
+        <div class="role-card" data-role="Cloud Engineer" data-category="engineering" data-keywords="aws kubernetes devops terraform docker gcp infrastructure cicd">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">☁️</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Cloud Engineer</h3>
+            <p class="role-desc">Architect resilient multi-region infrastructure, Docker containers, and CI/CD pipelines.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">AWS</span>
+            <span class="skill-pill">Kubernetes</span>
+            <span class="skill-pill">DevOps</span>
+          </div>
+        </div>
+
+        <!-- 8. Cybersecurity Analyst -->
+        <div class="role-card" data-role="Cybersecurity Analyst" data-category="engineering" data-keywords="zero-trust pentesting network soc siem threat defense compliance">
+          <div>
+            <div class="card-head">
+              <div class="role-icon">🔐</div>
+              <div class="check-circle"><i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i></div>
+            </div>
+            <h3 class="role-title">Cybersecurity Analyst</h3>
+            <p class="role-desc">Safeguard systems against modern vectors with Zero-Trust and continuous pen-testing.</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-pill">Zero-Trust</span>
+            <span class="skill-pill">PenTesting</span>
+            <span class="skill-pill">Network</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Floating Confirmation Dock -->
+      <div class="dock" id="floatingDock">
+        <div class="dock-target-info">
+          <span class="dock-emoji" id="dockEmoji">🎯</span>
+          <div>
+            <div class="dock-label">Selected Track</div>
+            <div class="dock-role-name" id="dockRoleTitle">Select a role</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-continue" id="submitBtn">
+          <span>Continue to Assessment</span>
+          <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+    </form>
+
+  </main>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // DOM Elements
+    const cards = document.querySelectorAll('.role-card');
+    const hiddenInput = document.getElementById('selectedRoleInput');
+    const floatingDock = document.getElementById('floatingDock');
+    const dockEmoji = document.getElementById('dockEmoji');
+    const dockRoleTitle = document.getElementById('dockRoleTitle');
+    const searchInput = document.getElementById('searchInput');
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const emptyState = document.getElementById('emptyState');
+    const roleForm = document.getElementById('roleForm');
+
+    // Selection Behavior
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selection from others
+        cards.forEach(c => c.classList.remove('selected'));
+
+        // Apply selection to clicked card
+        card.classList.add('selected');
+
+        const role = card.getAttribute('data-role');
+        const emoji = card.querySelector('.role-icon').textContent.trim();
+
+        // Update hidden input & floating dock
+        hiddenInput.value = role;
+        dockRoleTitle.textContent = role;
+        dockEmoji.textContent = emoji;
+
+        // Reveal Dock
+        floatingDock.classList.add('visible');
+      });
+    });
+
+    // Filtering & Search
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function filterCards() {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const role = card.getAttribute('data-role').toLowerCase();
+        const keywords = card.getAttribute('data-keywords').toLowerCase();
+
+        const matchesCategory = (activeFilter === 'all' || category === activeFilter);
+        const matchesSearch = !searchQuery || role.includes(searchQuery) || keywords.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      filterCards();
+    });
+
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeFilter = pill.getAttribute('data-category');
+        filterCards();
+      });
+    });
+
+    // Form Redirection
+    roleForm.addEventListener('submit', (e) => {
+      if (!hiddenInput.value) {
+        e.preventDefault();
+        return;
+      }
+      // Saves selection locally for persistence
+      try {
+        localStorage.setItem('careerx_target_role', hiddenInput.value);
+      } catch (err) {}
+    });
+  </script>
 </body>
 </html>
