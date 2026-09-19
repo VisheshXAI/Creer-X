@@ -117,7 +117,7 @@
     .call-stage {
       flex: 1;
       display: grid;
-      grid-template-columns: 1.6fr 1fr;
+      grid-template-columns: 1.55fr 1fr;
       gap: 16px;
       padding: 16px;
       height: calc(100vh - 140px);
@@ -127,7 +127,7 @@
     /* Left Video Frame (Mentor Main Camera) */
     .video-feed-container {
       position: relative;
-      background: #000;
+      background: #0f172a;
       border-radius: 20px;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -137,12 +137,46 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
+    .mentor-visual-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center top;
+      transition: transform 0.3s ease;
+    }
+
+    /* Speaking Pulse Animation on Mentor Video */
+    .mentor-visual-layer.speaking {
+      animation: mentorPulse 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes mentorPulse {
+      0% { transform: scale(1); filter: brightness(1); }
+      100% { transform: scale(1.02); filter: brightness(1.08); }
+    }
+
     .mentor-main-stream {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      filter: brightness(0.95);
+      opacity: 0.95;
+    }
+
+    /* Live Studio Stage Lighting Overlay */
+    .lighting-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, transparent 40%, rgba(11, 15, 25, 0.65) 100%);
+      pointer-events: none;
+      z-index: 2;
     }
 
     /* Video Overlays */
@@ -150,7 +184,7 @@
       position: absolute;
       bottom: 20px;
       left: 20px;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.88);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       padding: 10px 18px;
@@ -226,7 +260,7 @@
       align-items: center;
       justify-content: center;
       z-index: 40;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
     }
 
     .call-connecting-screen.hidden {
@@ -282,8 +316,8 @@
     }
 
     .speech-text {
-      font-size: 16px;
-      line-height: 1.5;
+      font-size: 15.5px;
+      line-height: 1.55;
       font-weight: 600;
       color: #fff;
     }
@@ -407,7 +441,7 @@
     <div class="call-meta">
       <div class="brand-title">
         <i data-lucide="video" style="color:var(--cyan); width:20px; height:20px;"></i>
-        CareerX Interview Call
+        CareerX Live Video Assessment
       </div>
       <div class="rec-badge">
         <span class="rec-pulse"></span> REC 00:<span id="callDuration">00</span>
@@ -439,20 +473,22 @@
         <div class="connection-pulse-ring">
           <i data-lucide="phone-call" style="width:36px; height:36px; color:var(--brand);"></i>
         </div>
-        <h3 style="font-size:20px; font-weight:700; margin-bottom:6px;">Establishing Secure AI Link...</h3>
-        <p style="color:var(--text-muted); font-size:14px;">Connecting video call with <span id="connectingMentor">Arjun</span></p>
+        <h3 style="font-size:20px; font-weight:700; margin-bottom:6px;">Connecting Video Call...</h3>
+        <p style="color:var(--text-muted); font-size:14px;">Establishing secure stream with <span id="connectingMentor">Arjun</span></p>
       </div>
 
-      <!-- Live Looping Video Feed -->
-      <video 
-        id="mentorVideo"
-        class="mentor-main-stream"
-        autoplay 
-        loop 
-        muted 
-        playsinline
-        src="https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-fashion-man-looking-at-the-camera-40283-large.mp4">
-      </video>
+      <!-- High Definition Mentor Visual Layer -->
+      <div class="mentor-visual-layer" id="mentorVisual">
+        <video 
+          id="mentorVideo"
+          class="mentor-main-stream"
+          autoplay 
+          loop 
+          muted 
+          playsinline>
+        </video>
+        <div class="lighting-overlay"></div>
+      </div>
 
       <!-- Mentor In-call HUD Tag -->
       <div class="mentor-hud-tag">
@@ -524,24 +560,34 @@
     // 1. Identify Candidate & Selected Mentor
     const urlParams = new URLSearchParams(window.location.search);
     const selectedMentor = urlParams.get('mentor') || "{{ mentor }}" || "Arjun";
-    const candidateName = "Vishesh"; // Personalized greeting for the user
+    const candidateName = "Vishesh";
 
+    const mentorVisual = document.getElementById('mentorVisual');
     const mentorVideo = document.getElementById('mentorVideo');
     const mentorNamePlate = document.getElementById('mentorNamePlate');
     const mentorRolePlate = document.getElementById('mentorRolePlate');
     const connectingMentor = document.getElementById('connectingMentor');
 
+    // Robust Fallback Visual Feed setup so screen is NEVER black
     if (selectedMentor.toLowerCase().includes('ava')) {
       mentorNamePlate.innerText = "Ava";
-      mentorRolePlate.innerText = "Career Coach Mentor";
+      mentorRolePlate.innerText = "Executive Career Coach";
       connectingMentor.innerText = "Ava";
+      mentorVisual.style.backgroundImage = "url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1400&q=85')";
       mentorVideo.src = "https://assets.mixkit.co/videos/preview/mixkit-business-woman-analyzing-data-on-laptop-40068-large.mp4";
     } else {
       mentorNamePlate.innerText = "Arjun";
       mentorRolePlate.innerText = "Senior AI Engineer Mentor";
       connectingMentor.innerText = "Arjun";
+      mentorVisual.style.backgroundImage = "url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1400&q=85')";
       mentorVideo.src = "https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-fashion-man-looking-at-the-camera-40283-large.mp4";
     }
+
+    // Video play error fallback handling
+    mentorVideo.play().catch(() => {
+      // If browser blocks auto video, the high-res visual layer remains active
+      mentorVideo.style.display = 'none';
+    });
 
     // 2. Candidate Webcam Activator
     let localStream = null;
@@ -554,7 +600,7 @@
         .catch(err => console.log("Webcam access optional or unavailable"));
     }
 
-    // Call Timer Counter
+    // Call Duration Counter
     let durationSeconds = 0;
     setInterval(() => {
       durationSeconds++;
@@ -564,26 +610,36 @@
 
     // 3. Personalized First Call Welcome Speech
     function triggerCallGreeting() {
-      // Hide connecting splash screen
       setTimeout(() => {
         document.getElementById('connectingScreen').classList.add('hidden');
         
-        const welcomeMessage = `Hi ${candidateName}, I'm ${selectedMentor}. Welcome to your AI career interview! I will be taking your 5-round assessment today. Let's begin with Round 1: Tell me about your technical background and what core technologies you feel most confident in.`;
+        const welcomeMessage = `Hi ${candidateName}, I'm ${selectedMentor}. Welcome to your AI technical interview! I will be taking your 5-round assessment today. Let's begin with Round 1: Tell me about your technical background and what core technologies you feel most confident in.`;
 
         document.getElementById('speechLabel').innerText = `${selectedMentor.toUpperCase()} IS ASKING:`;
         document.getElementById('speechText').innerText = welcomeMessage;
 
         speakMentor(welcomeMessage);
-      }, 1400);
+      }, 1200);
     }
 
-    // Web Speech API Voice Synthesis
+    // Web Speech API Voice Synthesis with Speaking Animation
     function speakMentor(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(text);
         msg.rate = 1.0;
         msg.pitch = selectedMentor.toLowerCase().includes('ava') ? 1.15 : 0.95;
+
+        msg.onstart = () => {
+          mentorVisual.classList.add('speaking');
+          document.getElementById('speakingWave').style.opacity = '1';
+        };
+
+        msg.onend = () => {
+          mentorVisual.classList.remove('speaking');
+          document.getElementById('speakingWave').style.opacity = '0.35';
+        };
+
         window.speechSynthesis.speak(msg);
       }
     }
@@ -617,7 +673,6 @@
         lucide.createIcons();
 
         if (data.completed) {
-          // Completed all 5 rounds -> go to skill-gap
           document.getElementById('speechText').innerText = "Excellent work, Vishesh! I have gathered all diagnostic data. Analyzing your skill gaps now...";
           speakMentor("Excellent work, Vishesh! Your interview is complete. Analyzing your skill gaps now.");
           setTimeout(() => {
