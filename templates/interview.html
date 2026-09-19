@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CareerX — Live Video Call Interview</title>
+  <title>CareerX — Live AI Video Interview Call</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -11,15 +11,15 @@
 
   <style>
     :root {
-      --bg: #0B0F19;
-      --card-bg: rgba(17, 24, 39, 0.85);
+      --bg: #090D16;
+      --card-bg: rgba(15, 23, 42, 0.85);
       --border: rgba(255, 255, 255, 0.1);
       --brand: #4F46E5;
       --cyan: #06B6D4;
       --danger: #EF4444;
       --success: #10B981;
-      --text: #F9FAFB;
-      --text-muted: #9CA3AF;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
     }
 
     * {
@@ -40,12 +40,12 @@
 
     /* Top Video Call Header */
     .call-header {
-      height: 60px;
+      height: 56px;
       padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(11, 15, 25, 0.9);
+      background: rgba(9, 13, 22, 0.95);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(10px);
       z-index: 50;
@@ -58,7 +58,7 @@
     }
 
     .brand-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -71,7 +71,7 @@
       gap: 6px;
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 10px;
+      padding: 3px 10px;
       border-radius: 9999px;
       font-size: 11px;
       font-weight: 700;
@@ -103,7 +103,7 @@
     }
 
     .round-dot {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--text-muted);
     }
@@ -117,74 +117,85 @@
     .call-stage {
       flex: 1;
       display: grid;
-      grid-template-columns: 1.55fr 1fr;
+      grid-template-columns: 1.6fr 1fr;
       gap: 16px;
       padding: 16px;
-      height: calc(100vh - 140px);
+      height: calc(100vh - 136px);
       position: relative;
     }
 
-    /* Left Video Frame (Mentor Main Camera) */
+    /* Left Video Frame (Live Talking Mentor) */
     .video-feed-container {
       position: relative;
-      background: #0f172a;
+      background: #050811;
       border-radius: 20px;
       overflow: hidden;
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     }
 
-    .mentor-visual-layer {
-      position: absolute;
-      inset: 0;
+    /* Interactive Live Avatar Canvas / Moving Character */
+    .mentor-canvas-wrapper {
+      position: relative;
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-size: cover;
-      background-position: center top;
-      transition: transform 0.3s ease;
+      overflow: hidden;
     }
 
-    /* Speaking Pulse Animation on Mentor Video */
-    .mentor-visual-layer.speaking {
-      animation: mentorPulse 1.8s ease-in-out infinite alternate;
-    }
-
-    @keyframes mentorPulse {
-      0% { transform: scale(1); filter: brightness(1); }
-      100% { transform: scale(1.02); filter: brightness(1.08); }
-    }
-
-    .mentor-main-stream {
-      position: absolute;
-      inset: 0;
+    #talkingMentorCanvas {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
-      opacity: 0.95;
+      transition: transform 0.2s ease-out;
     }
 
-    /* Live Studio Stage Lighting Overlay */
-    .lighting-overlay {
+    /* Realistic Video Call Lighting Effect */
+    .studio-glow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 50% 30%, transparent 40%, rgba(11, 15, 25, 0.65) 100%);
+      background: radial-gradient(circle at 50% 35%, transparent 35%, rgba(5, 8, 17, 0.8) 100%);
       pointer-events: none;
-      z-index: 2;
+      z-index: 4;
     }
 
-    /* Video Overlays */
+    /* Mentor Talking Subtitle Banner */
+    .mentor-talking-pill {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .pulse-green {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* Mentor In-call HUD Tag */
     .mentor-hud-tag {
       position: absolute;
       bottom: 20px;
       left: 20px;
-      background: rgba(15, 23, 42, 0.88);
+      background: rgba(15, 23, 42, 0.9);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       padding: 10px 18px;
@@ -195,25 +206,19 @@
       z-index: 10;
     }
 
-    .mentor-talking-wave {
+    .voice-meter-bars {
       display: flex;
       align-items: center;
       gap: 3px;
-      height: 16px;
+      height: 18px;
     }
 
-    .wave-bar {
+    .v-bar {
       width: 3px;
       background: var(--cyan);
       border-radius: 2px;
-      animation: waveBounce 0.8s ease-in-out infinite alternate;
-    }
-    .wave-bar:nth-child(2) { animation-delay: 0.2s; }
-    .wave-bar:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes waveBounce {
-      0% { height: 4px; }
-      100% { height: 16px; }
+      height: 4px;
+      transition: height 0.1s ease;
     }
 
     /* Candidate Picture-in-Picture Webcam */
@@ -221,8 +226,8 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 190px;
-      height: 130px;
+      width: 180px;
+      height: 120px;
       background: #1F2937;
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: 14px;
@@ -242,7 +247,7 @@
       position: absolute;
       bottom: 6px;
       left: 8px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       background: rgba(0,0,0,0.65);
       padding: 2px 8px;
@@ -250,11 +255,11 @@
       color: #fff;
     }
 
-    /* Connecting Overlay Animation */
+    /* Connecting Animation Screen */
     .call-connecting-screen {
       position: absolute;
       inset: 0;
-      background: #0B0F19;
+      background: #090D16;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -269,15 +274,15 @@
     }
 
     .connection-pulse-ring {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       border: 3px solid var(--brand);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       animation: ringSpread 1.6s infinite ease-out;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     @keyframes ringSpread {
@@ -292,10 +297,10 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       backdrop-filter: blur(12px);
-      padding: 22px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .mentor-speech-bubble {
@@ -303,7 +308,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-left: 4px solid var(--cyan);
       border-radius: 14px;
-      padding: 16px 20px;
+      padding: 16px;
     }
 
     .speech-label {
@@ -316,7 +321,7 @@
     }
 
     .speech-text {
-      font-size: 15.5px;
+      font-size: 15px;
       line-height: 1.55;
       font-weight: 600;
       color: #fff;
@@ -352,7 +357,7 @@
     /* Bottom Action Controls Dock */
     .call-controls-bar {
       height: 80px;
-      background: rgba(11, 15, 25, 0.95);
+      background: rgba(9, 13, 22, 0.95);
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -393,7 +398,7 @@
       border: none;
       padding: 12px 28px;
       border-radius: 9999px;
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -429,7 +434,7 @@
         height: auto;
       }
       .video-feed-container {
-        height: 50vh;
+        height: 48vh;
       }
     }
   </style>
@@ -440,8 +445,8 @@
   <header class="call-header">
     <div class="call-meta">
       <div class="brand-title">
-        <i data-lucide="video" style="color:var(--cyan); width:20px; height:20px;"></i>
-        CareerX Live Video Assessment
+        <i data-lucide="video" style="color:var(--cyan); width:18px; height:18px;"></i>
+        CareerX Live AI Interview
       </div>
       <div class="rec-badge">
         <span class="rec-pulse"></span> REC 00:<span id="callDuration">00</span>
@@ -465,37 +470,37 @@
   <!-- Video Call Workspace -->
   <main class="call-stage">
 
-    <!-- Left Mentor Video Stream -->
+    <!-- Left Mentor Video Stream with Talking Animation -->
     <div class="video-feed-container">
       
       <!-- Video Connection Loading -->
       <div class="call-connecting-screen" id="connectingScreen">
         <div class="connection-pulse-ring">
-          <i data-lucide="phone-call" style="width:36px; height:36px; color:var(--brand);"></i>
+          <i data-lucide="phone-call" style="width:32px; height:32px; color:var(--brand);"></i>
         </div>
-        <h3 style="font-size:20px; font-weight:700; margin-bottom:6px;">Connecting Video Call...</h3>
-        <p style="color:var(--text-muted); font-size:14px;">Establishing secure stream with <span id="connectingMentor">Arjun</span></p>
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:4px;">Connecting Video Call...</h3>
+        <p style="color:var(--text-muted); font-size:13px;">Establishing live stream with <span id="connectingMentor">Arjun</span></p>
       </div>
 
-      <!-- High Definition Mentor Visual Layer -->
-      <div class="mentor-visual-layer" id="mentorVisual">
-        <video 
-          id="mentorVideo"
-          class="mentor-main-stream"
-          autoplay 
-          loop 
-          muted 
-          playsinline>
-        </video>
-        <div class="lighting-overlay"></div>
+      <!-- Live Talking Character Render Engine -->
+      <div class="mentor-canvas-wrapper">
+        <canvas id="talkingMentorCanvas" width="900" height="700"></canvas>
+        <div class="studio-glow"></div>
+      </div>
+
+      <!-- Live Stream Status Tag -->
+      <div class="mentor-talking-pill">
+        <span class="pulse-green"></span>
+        <span id="mentorLiveStatus">LIVE VIDEO STREAM</span>
       </div>
 
       <!-- Mentor In-call HUD Tag -->
       <div class="mentor-hud-tag">
-        <div class="mentor-talking-wave" id="speakingWave">
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
+        <div class="voice-meter-bars" id="voiceBars">
+          <span class="v-bar"></span>
+          <span class="v-bar"></span>
+          <span class="v-bar"></span>
+          <span class="v-bar"></span>
         </div>
         <div>
           <div style="font-size:14px; font-weight:700;" id="mentorNamePlate">Arjun</div>
@@ -562,34 +567,94 @@
     const selectedMentor = urlParams.get('mentor') || "{{ mentor }}" || "Arjun";
     const candidateName = "Vishesh";
 
-    const mentorVisual = document.getElementById('mentorVisual');
-    const mentorVideo = document.getElementById('mentorVideo');
     const mentorNamePlate = document.getElementById('mentorNamePlate');
     const mentorRolePlate = document.getElementById('mentorRolePlate');
     const connectingMentor = document.getElementById('connectingMentor');
 
-    // Robust Fallback Visual Feed setup so screen is NEVER black
-    if (selectedMentor.toLowerCase().includes('ava')) {
+    const isAva = selectedMentor.toLowerCase().includes('ava');
+
+    if (isAva) {
       mentorNamePlate.innerText = "Ava";
       mentorRolePlate.innerText = "Executive Career Coach";
       connectingMentor.innerText = "Ava";
-      mentorVisual.style.backgroundImage = "url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1400&q=85')";
-      mentorVideo.src = "https://assets.mixkit.co/videos/preview/mixkit-business-woman-analyzing-data-on-laptop-40068-large.mp4";
     } else {
       mentorNamePlate.innerText = "Arjun";
       mentorRolePlate.innerText = "Senior AI Engineer Mentor";
       connectingMentor.innerText = "Arjun";
-      mentorVisual.style.backgroundImage = "url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1400&q=85')";
-      mentorVideo.src = "https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-fashion-man-looking-at-the-camera-40283-large.mp4";
     }
 
-    // Video play error fallback handling
-    mentorVideo.play().catch(() => {
-      // If browser blocks auto video, the high-res visual layer remains active
-      mentorVideo.style.display = 'none';
-    });
+    // 2. REAL-TIME TALKING CHARACTER ANIMATOR (Canvas Rendering Engine)
+    const canvas = document.getElementById('talkingMentorCanvas');
+    const ctx = canvas.getContext('2d');
 
-    // 2. Candidate Webcam Activator
+    const mentorImg = new Image();
+    mentorImg.crossOrigin = "anonymous";
+    mentorImg.src = isAva 
+      ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=85"
+      : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=85";
+
+    let isSpeaking = false;
+    let frameCount = 0;
+    let mouthOpen = 0;
+    let headTilt = 0;
+    let blinkValue = 0;
+
+    mentorImg.onload = () => {
+      requestAnimationFrame(renderCharacterLoop);
+    };
+
+    function renderCharacterLoop() {
+      frameCount++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Natural breathing motion
+      const breathing = Math.sin(frameCount * 0.04) * 6;
+
+      // Realistic talking mouth & head motion
+      if (isSpeaking) {
+        mouthOpen = Math.abs(Math.sin(frameCount * 0.35)) * 14;
+        headTilt = Math.sin(frameCount * 0.08) * 4;
+        // Animate HUD voice bars
+        document.querySelectorAll('.v-bar').forEach((b, i) => {
+          b.style.height = `${Math.random() * 16 + 4}px`;
+        });
+      } else {
+        mouthOpen = 0;
+        headTilt = Math.sin(frameCount * 0.02) * 1.5;
+        document.querySelectorAll('.v-bar').forEach(b => b.style.height = '4px');
+      }
+
+      // Natural eye-blink cycle
+      if (frameCount % 180 < 8) {
+        blinkValue = 1;
+      } else {
+        blinkValue = 0;
+      }
+
+      ctx.save();
+      // Apply realistic subtle head movements & breathing
+      ctx.translate(canvas.width / 2 + headTilt, canvas.height / 2 + breathing);
+
+      // Draw base character image
+      const w = canvas.width * 0.95;
+      const h = canvas.height * 1.1;
+      ctx.drawImage(mentorImg, -w / 2, -h / 2 + 30, w, h);
+
+      // Draw dynamic live lip movement overlay when speaking
+      if (mouthOpen > 2) {
+        ctx.fillStyle = isAva ? "rgba(180, 50, 60, 0.75)" : "rgba(120, 60, 50, 0.7)";
+        ctx.beginPath();
+        // Mouth position coordinates
+        const mouthY = isAva ? 42 : 55;
+        ctx.ellipse(0, mouthY, 12, mouthOpen * 0.45, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+      requestAnimationFrame(renderCharacterLoop);
+    }
+
+    // 3. Activate Candidate Webcam
     let localStream = null;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true, audio: false })
@@ -597,7 +662,7 @@
           localStream = stream;
           document.getElementById('userCam').srcObject = stream;
         })
-        .catch(err => console.log("Webcam access optional or unavailable"));
+        .catch(() => console.log("Webcam optional"));
     }
 
     // Call Duration Counter
@@ -608,12 +673,12 @@
       document.getElementById('callDuration').innerText = s;
     }, 1000);
 
-    // 3. Personalized First Call Welcome Speech
+    // 4. Personalized First Call Welcome Speech
     function triggerCallGreeting() {
       setTimeout(() => {
         document.getElementById('connectingScreen').classList.add('hidden');
         
-        const welcomeMessage = `Hi ${candidateName}, I'm ${selectedMentor}. Welcome to your AI technical interview! I will be taking your 5-round assessment today. Let's begin with Round 1: Tell me about your technical background and what core technologies you feel most confident in.`;
+        const welcomeMessage = `Hi ${candidateName}, I'm ${selectedMentor}. Welcome to your AI career interview! I will be taking your 5-round assessment today. Let's begin with Round 1: Tell me about your technical background and what core technologies you feel most confident in.`;
 
         document.getElementById('speechLabel').innerText = `${selectedMentor.toUpperCase()} IS ASKING:`;
         document.getElementById('speechText').innerText = welcomeMessage;
@@ -622,29 +687,31 @@
       }, 1200);
     }
 
-    // Web Speech API Voice Synthesis with Speaking Animation
+    // Web Speech API Voice Synthesis with Live Talking Trigger
     function speakMentor(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(text);
-        msg.rate = 1.0;
-        msg.pitch = selectedMentor.toLowerCase().includes('ava') ? 1.15 : 0.95;
+        msg.rate = 1.02;
+        msg.pitch = isAva ? 1.15 : 0.95;
 
         msg.onstart = () => {
-          mentorVisual.classList.add('speaking');
-          document.getElementById('speakingWave').style.opacity = '1';
+          isSpeaking = true;
+          document.getElementById('mentorLiveStatus').innerText = "MENTOR SPEAKING...";
+          document.getElementById('mentorLiveStatus').style.color = "var(--cyan)";
         };
 
         msg.onend = () => {
-          mentorVisual.classList.remove('speaking');
-          document.getElementById('speakingWave').style.opacity = '0.35';
+          isSpeaking = false;
+          document.getElementById('mentorLiveStatus').innerText = "LISTENING TO YOU...";
+          document.getElementById('mentorLiveStatus').style.color = "#10B981";
         };
 
         window.speechSynthesis.speak(msg);
       }
     }
 
-    // 4. Round Navigation & Questions
+    // 5. Round Navigation & Questions
     let currentRound = 1;
 
     function countWords() {
@@ -653,7 +720,6 @@
       document.getElementById('wordCounter').innerText = `${count} words`;
     }
 
-    // Submit Answer & Step through rounds
     function sendAnswer() {
       const answer = document.getElementById('candidateInput').value.trim();
       const btn = document.getElementById('submitAnswerBtn');
@@ -759,7 +825,6 @@
       }
     }
 
-    // Start Call on page ready
     window.addEventListener('DOMContentLoaded', triggerCallGreeting);
   </script>
 </body>
