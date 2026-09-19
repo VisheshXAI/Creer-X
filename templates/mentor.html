@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerX — Step 2: Select Your AI Mentor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --brand: #4F46E5;
+      --brand-light: #EEF2FF;
+      --border: #E2E8F0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 30;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28);
+    }
+
+    .intake-badge {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 9999px;
+    }
+
+    /* Stepper Header */
+    .stepper-container {
+      max-width: 900px;
+      width: 92%;
+      margin: 0 auto 20px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      position: relative;
+      z-index: 30;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-item.active {
+      color: var(--text-main);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      background: #F1F5F9;
+      color: #64748B;
+    }
+
+    .step-item.active .step-num {
+      background: var(--brand);
+      color: #FFFFFF;
+    }
+
+    .step-num.done {
+      background: #ECFDF5;
+      color: #10B981;
+      border: 1px solid #A7F3D0;
+    }
+
+    /* Header text */
+    .header-text {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 10px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 30;
+    }
+
+    .step-pill {
+      display: inline-block;
+      background: var(--brand-light);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 3.6vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    /* Live Studio Stage */
+    .stage {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: flex-end;
+      position: relative;
+      z-index: 20;
+      height: calc(100vh - 240px);
+      min-height: 520px;
+    }
+
+    .mentor-podium {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
+    }
+
+    /* Subtle Studio Floor Spotlight */
+    .spotlight {
+      position: absolute;
+      bottom: 20px;
+      width: 320px;
+      height: 40px;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.22) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .character-wrap {
+      position: relative;
+      height: 90%;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    /* Video stream / moving human figure */
+    .character-feed {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      mask-image: linear-gradient(to top, transparent 2%, black 18%, black 100%);
+      -webkit-mask-image: linear-gradient(to top, transparent 2%, black 18%, black 100%);
+      filter: drop-shadow(0 8px 24px rgba(15, 23, 42, 0.12));
+      transition: transform 0.3s ease, filter 0.3s ease;
+      animation: naturalBreathing 4.5s ease-in-out infinite;
+    }
+
+    @keyframes naturalBreathing {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-7px) scale(1.01); }
+    }
+
+    /* Floating Status Pill */
+    .status-pill {
+      position: absolute;
+      top: 14%;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      z-index: 15;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes ping {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Character Badge Tag */
+    .character-info-card {
+      position: absolute;
+      bottom: 24px;
+      z-index: 20;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 9999px;
+      padding: 10px 24px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .mentor-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .mentor-role {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Hover States */
+    .mentor-podium:hover .character-feed {
+      animation-play-state: paused;
+      transform: translateY(-12px) scale(1.04);
+      filter: drop-shadow(0 14px 32px rgba(79, 70, 229, 0.25));
+    }
+
+    .mentor-podium:hover .spotlight {
+      transform: scale(1.3);
+      opacity: 1;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.4) 0%, transparent 70%);
+    }
+
+    .mentor-podium:hover .character-info-card {
+      border-color: var(--brand);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(79, 70, 229, 0.18);
+    }
+
+    /* Selected & Dimmed Transitions */
+    .mentor-podium.selected {
+      transform: scale(1.05);
+      z-index: 40;
+    }
+
+    .mentor-podium.dimmed {
+      opacity: 0.25;
+      filter: blur(6px) grayscale(0.7);
+      pointer-events: none;
+    }
+
+    /* Floating Confirmation Dock */
+    .floating-dock {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+      padding: 10px 14px 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      z-index: 100;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .floating-dock.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .start-interview-btn {
+      background: var(--brand);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 9999px;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.32);
+    }
+
+    .start-interview-btn:hover {
+      background: #4338CA;
+      transform: scale(1.02);
+    }
+
+    @media (max-width: 768px) {
+      .stage {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 40px;
+        padding-bottom: 40px;
+      }
+      .mentor-podium {
+        height: 55vh;
+      }
+      .stepper-container {
+        padding: 12px 20px;
+      }
+      .step-item:not(.active) span:not(.step-num) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand-logo">
+      <div class="brand-icon">
+        <i data-lucide="sparkles" style="width:20px; height:20px;"></i>
+      </div>
+      CareerX
+    </a>
+    <div class="intake-badge">AI Intake Flow</div>
+  </nav>
+
+  <!-- Progress Stepper -->
+  <div class="stepper-container">
+    <div class="step-item">
+      <span class="step-num done">✓</span>
+      <span>Target Job</span>
+    </div>
+    <div class="step-item active">
+      <span class="step-num">2</span>
+      <span>Assessment</span>
+    </div>
+    <div class="step-item">
+      <span class="step-num">3</span>
+      <span>Skill Gap</span>
+    </div>
+    <div class="step-item">
+      <span class="step-num">4</span>
+      <span>Roadmap</span>
+    </div>
+  </div>
+
+  <!-- Header Text -->
+  <div class="header-text">
+    <div class="step-pill">Step 2 of 4</div>
+    <h1 class="hero-title">Select Your AI Mentor</h1>
+    <p class="hero-subtitle">Click on either mentor to begin your interactive 5-round career assessment</p>
+  </div>
+
+  <!-- Live Stage -->
+  <main class="stage">
+
+    <!-- ARJUN -->
+    <div class="mentor-podium" id="podiumArjun" onclick="pickMentor('Arjun')">
+      <div class="spotlight"></div>
+      
+      <div class="character-wrap">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span>ARJUN • READY</span>
+        </div>
+
+        <video 
+          class="character-feed" 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-fashion-man-looking-at-the-camera-40283-large.mp4" type="video/mp4">
+        </video>
+
+        <div class="character-info-card">
+          <div class="mentor-name">Arjun</div>
+          <div class="mentor-role">Senior AI Engineer Mentor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AVA -->
+    <div class="mentor-podium" id="podiumAva" onclick="pickMentor('Ava')">
+      <div class="spotlight"></div>
+
+      <div class="character-wrap">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span>AVA • READY</span>
+        </div>
+
+        <video 
+          class="character-feed" 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          poster="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-business-woman-analyzing-data-on-laptop-40068-large.mp4" type="video/mp4">
+        </video>
+
+        <div class="character-info-card">
+          <div class="mentor-name">Ava</div>
+          <div class="mentor-role" style="color: #7C3AED;">Career Coach Mentor</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Floating Confirmation Dock -->
+  <div class="floating-dock" id="mentorDock">
+    <div>
+      <div style="font-size: 11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Selected Mentor</div>
+      <div id="dockMentorName" style="font-size: 15px; font-weight:700; color:var(--text-main);">Arjun</div>
+    </div>
+    <button class="start-interview-btn" id="startBtn" onclick="confirmAndLaunch()">
+      Start AI Interview
+      <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+    </button>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let chosenMentor = null;
+
+    // Mouse parallax tilt
+    document.addEventListener('mousemove', (e) => {
+      const xOffset = (e.clientX / window.innerWidth - 0.5) * 8;
+      document.querySelectorAll('.character-feed').forEach(feed => {
+        feed.style.transform = `rotateY(${xOffset}deg)`;
+      });
+    });
+
+    function pickMentor(name) {
+      chosenMentor = name;
+      const arjun = document.getElementById('podiumArjun');
+      const ava = document.getElementById('podiumAva');
+
+      if (name === 'Arjun') {
+        arjun.classList.add('selected');
+        arjun.classList.remove('dimmed');
+        ava.classList.add('dimmed');
+        ava.classList.remove('selected');
+      } else {
+        ava.classList.add('selected');
+        ava.classList.remove('dimmed');
+        arjun.classList.add('dimmed');
+        arjun.classList.remove('selected');
+      }
+
+      document.getElementById('dockMentorName').innerText = `${name} (${name === 'Arjun' ? 'AI Engineer' : 'Career Coach'})`;
+      document.getElementById('mentorDock').classList.add('show');
+    }
+
+    function confirmAndLaunch() {
+      if (!chosenMentor) return;
+
+      const btn = document.getElementById('startBtn');
+      btn.innerText = "Connecting...";
+      btn.style.opacity = "0.7";
+
+      fetch('/api/select-mentor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mentor: chosenMentor })
+      })
+      .then(res => res.json())
+      .then(data => {
+        window.location.href = data.redirect || `/interview?mentor=${encodeURIComponent(chosenMentor)}`;
+      })
+      .catch(err => {
+        window.location.href = `/interview?mentor=${encodeURIComponent(chosenMentor)}`;
+      });
+    }
+  </script>
+</body>
+</html>
