@@ -1,67 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareerX Assessment</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="hero">
+<h1>AI Engineer Assessment</h1>
 
-    <h1>AI Engineer Assessment</h1>
+<form action="/dashboard" method="POST">
 
-    <form action="/dashboard" method="POST">
+    <h3>Do you know Python?</h3>
+    <select name="python">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-        <h3>1. Do you know Python?</h3>
-        <select name="python">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+    <br><br>
 
-        <br><br>
+    <h3>Do you know SQL?</h3>
+    <select name="sql">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-        <h3>2. Do you know SQL?</h3>
-        <select name="sql">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+    <br><br>
 
-        <br><br>
+    <h3>Do you know NumPy?</h3>
+    <select name="numpy">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-        <h3>3. Do you know NumPy?</h3>
-        <select name="numpy">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+    <br><br>
 
-        <br><br>
+    <h3>Do you know Pandas?</h3>
+    <select name="pandas">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-        <h3>4. Do you know Pandas?</h3>
-        <select name="pandas">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+    <br><br>
 
-        <br><br>
+    <h3>Do you know Machine Learning?</h3>
+    <select name="ml">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-        <h3>5. Do you know Machine Learning?</h3>
-        <select name="ml">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+    <br><br>
 
-        <br><br><br>
+    <button type="submit">
+        Analyze Skills
+    </button>
 
-        <button type="submit">
-            Analyze Skills
-        </button>
-
-    </form>
-
-</div>
+</form>
 
 </body>
 </html>
