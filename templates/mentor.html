@@ -88,7 +88,7 @@
     .stepper-container {
       max-width: 900px;
       width: 92%;
-      margin: 0 auto 20px;
+      margin: 0 auto 16px;
       background: #FFFFFF;
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -138,7 +138,7 @@
       border: 1px solid #A7F3D0;
     }
 
-    /* Header text */
+    /* Header Text */
     .header-text {
       text-align: center;
       max-width: 820px;
@@ -164,7 +164,7 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text-main);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .hero-subtitle {
@@ -172,7 +172,7 @@
       color: var(--text-muted);
     }
 
-    /* Live Studio Stage */
+    /* Characters Stage */
     .stage {
       flex: 1;
       max-width: 1200px;
@@ -183,7 +183,7 @@
       align-items: flex-end;
       position: relative;
       z-index: 20;
-      height: calc(100vh - 240px);
+      height: calc(100vh - 230px);
       min-height: 520px;
     }
 
@@ -195,18 +195,18 @@
       align-items: center;
       justify-content: flex-end;
       cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease;
     }
 
-    /* Subtle Studio Floor Spotlight */
+    /* Floor Reflection Spotlight */
     .spotlight {
       position: absolute;
-      bottom: 20px;
+      bottom: 24px;
       width: 320px;
-      height: 40px;
-      background: radial-gradient(circle, rgba(79, 70, 229, 0.22) 0%, transparent 70%);
+      height: 38px;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.18) 0%, transparent 70%);
       border-radius: 50%;
-      filter: blur(20px);
+      filter: blur(18px);
       transition: all 0.3s ease;
       pointer-events: none;
       z-index: 1;
@@ -223,28 +223,26 @@
       z-index: 5;
     }
 
-    /* Video stream / moving human figure */
-    .character-feed {
+    /* Full-body Human Figure */
+    .character-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      mask-image: linear-gradient(to top, transparent 2%, black 18%, black 100%);
-      -webkit-mask-image: linear-gradient(to top, transparent 2%, black 18%, black 100%);
-      filter: drop-shadow(0 8px 24px rgba(15, 23, 42, 0.12));
-      transition: transform 0.3s ease, filter 0.3s ease;
-      animation: naturalBreathing 4.5s ease-in-out infinite;
+      object-fit: contain;
+      object-position: bottom center;
+      filter: drop-shadow(0 14px 28px rgba(15, 23, 42, 0.12));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+      animation: subtleLife 4s ease-in-out infinite alternate;
     }
 
-    @keyframes naturalBreathing {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-7px) scale(1.01); }
+    @keyframes subtleLife {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
     }
 
-    /* Floating Status Pill */
+    /* Live Online Chip */
     .status-pill {
       position: absolute;
-      top: 14%;
+      top: 8%;
       display: flex;
       align-items: center;
       gap: 7px;
@@ -273,10 +271,10 @@
       100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
-    /* Character Badge Tag */
+    /* Floating Mentor Badge */
     .character-info-card {
       position: absolute;
-      bottom: 24px;
+      bottom: 20px;
       z-index: 20;
       background: #FFFFFF;
       border: 1.5px solid var(--border);
@@ -305,17 +303,17 @@
       letter-spacing: 0.05em;
     }
 
-    /* Hover States */
-    .mentor-podium:hover .character-feed {
+    /* Hover Interactions */
+    .mentor-podium:hover .character-img {
       animation-play-state: paused;
-      transform: translateY(-12px) scale(1.04);
-      filter: drop-shadow(0 14px 32px rgba(79, 70, 229, 0.25));
+      transform: translateY(-14px) scale(1.04);
+      filter: drop-shadow(0 18px 36px rgba(79, 70, 229, 0.28));
     }
 
     .mentor-podium:hover .spotlight {
       transform: scale(1.3);
       opacity: 1;
-      background: radial-gradient(circle, rgba(79, 70, 229, 0.4) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.38) 0%, transparent 70%);
     }
 
     .mentor-podium:hover .character-info-card {
@@ -324,9 +322,9 @@
       box-shadow: 0 12px 28px rgba(79, 70, 229, 0.18);
     }
 
-    /* Selected & Dimmed Transitions */
+    /* Selection State */
     .mentor-podium.selected {
-      transform: scale(1.05);
+      transform: scale(1.04);
       z-index: 40;
     }
 
@@ -443,10 +441,10 @@
     <p class="hero-subtitle">Click on either mentor to begin your interactive 5-round career assessment</p>
   </div>
 
-  <!-- Live Stage -->
+  <!-- Characters Stage -->
   <main class="stage">
 
-    <!-- ARJUN -->
+    <!-- ARJUN (Male Senior AI Engineer) -->
     <div class="mentor-podium" id="podiumArjun" onclick="pickMentor('Arjun')">
       <div class="spotlight"></div>
       
@@ -456,15 +454,11 @@
           <span>ARJUN • READY</span>
         </div>
 
-        <video 
-          class="character-feed" 
-          autoplay 
-          loop 
-          muted 
-          playsinline 
-          poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-fashion-man-looking-at-the-camera-40283-large.mp4" type="video/mp4">
-        </video>
+        <!-- High-res Male AI Engineer Portrait -->
+        <img 
+          class="character-img" 
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=85" 
+          alt="Arjun - Male AI Engineer Mentor">
 
         <div class="character-info-card">
           <div class="mentor-name">Arjun</div>
@@ -473,7 +467,7 @@
       </div>
     </div>
 
-    <!-- AVA -->
+    <!-- AVA (Female Career Coach) -->
     <div class="mentor-podium" id="podiumAva" onclick="pickMentor('Ava')">
       <div class="spotlight"></div>
 
@@ -483,15 +477,11 @@
           <span>AVA • READY</span>
         </div>
 
-        <video 
-          class="character-feed" 
-          autoplay 
-          loop 
-          muted 
-          playsinline 
-          poster="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-business-woman-analyzing-data-on-laptop-40068-large.mp4" type="video/mp4">
-        </video>
+        <!-- High-res Female Executive Career Coach Portrait -->
+        <img 
+          class="character-img" 
+          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=85" 
+          alt="Ava - Career Coach Mentor">
 
         <div class="character-info-card">
           <div class="mentor-name">Ava</div>
@@ -506,7 +496,7 @@
   <div class="floating-dock" id="mentorDock">
     <div>
       <div style="font-size: 11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Selected Mentor</div>
-      <div id="dockMentorName" style="font-size: 15px; font-weight:700; color:var(--text-main);">Arjun</div>
+      <div id="dockMentorName" style="font-size: 15px; font-weight:700; color:var(--text-main);">Arjun (AI Engineer)</div>
     </div>
     <button class="start-interview-btn" id="startBtn" onclick="confirmAndLaunch()">
       Start AI Interview
@@ -518,14 +508,6 @@
     lucide.createIcons();
 
     let chosenMentor = null;
-
-    // Mouse parallax tilt
-    document.addEventListener('mousemove', (e) => {
-      const xOffset = (e.clientX / window.innerWidth - 0.5) * 8;
-      document.querySelectorAll('.character-feed').forEach(feed => {
-        feed.style.transform = `rotateY(${xOffset}deg)`;
-      });
-    });
 
     function pickMentor(name) {
       chosenMentor = name;
@@ -564,7 +546,7 @@
       .then(data => {
         window.location.href = data.redirect || `/interview?mentor=${encodeURIComponent(chosenMentor)}`;
       })
-      .catch(err => {
+      .catch(() => {
         window.location.href = `/interview?mentor=${encodeURIComponent(chosenMentor)}`;
       });
     }
